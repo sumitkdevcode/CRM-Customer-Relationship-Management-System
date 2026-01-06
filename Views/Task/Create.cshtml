@@ -1,0 +1,95 @@
+@model CRM___Customer_Relationship_Management_System.Models.CrmTask
+@{
+    ViewData["Title"] = "Add Task";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Task</h1>
+        <p class="page-subtitle">Create a new task or follow-up</p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="Task title" />
+                <span asp-validation-for="Title" class="invalid-feedback"></span>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Type" class="form-label"></label>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.TaskType>()" class="form-control form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Priority" class="form-label"></label>
+                    <select asp-for="Priority" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.TaskPriority>()" class="form-control form-select"></select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.TaskStatus>()" class="form-control form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DueDate" class="form-label"></label>
+                    <input asp-for="DueDate" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="DueDate" class="invalid-feedback"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="AssignedToId" class="form-label">Assign To</label>
+                <select asp-for="AssignedToId" asp-items="@ViewBag.Users" class="form-control form-select">
+                    <option value="">-- Select --</option>
+                </select>
+                <span asp-validation-for="AssignedToId" class="invalid-feedback"></span>
+            </div>
+            
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);"><i class="fas fa-link"></i> Link To (Optional)</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CustomerId" class="form-label">Customer</label>
+                    <select asp-for="CustomerId" asp-items="@ViewBag.Customers" class="form-control form-select">
+                        <option value="">-- None --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LeadId" class="form-label">Lead</label>
+                    <select asp-for="LeadId" asp-items="@ViewBag.Leads" class="form-control form-select">
+                        <option value="">-- None --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="DealId" class="form-label">Deal</label>
+                <select asp-for="DealId" asp-items="@ViewBag.Deals" class="form-control form-select">
+                    <option value="">-- None --</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Task details..."></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Save Task</button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

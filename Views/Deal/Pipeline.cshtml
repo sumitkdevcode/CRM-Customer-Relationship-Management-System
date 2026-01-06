@@ -1,0 +1,117 @@
+@model Dictionary<CRM___Customer_Relationship_Management_System.Models.DealStage, List<CRM___Customer_Relationship_Management_System.Models.Deal>>
+@{
+    ViewData["Title"] = "Sales Pipeline";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Sales Pipeline</h1>
+        <p class="page-subtitle">Visualize your deal flow</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-list"></i>
+            List View
+        </a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Deal
+        </a>
+    </div>
+</div>
+
+<div class="pipeline-container">
+    @{
+        var stages = new[] { 
+            CRM___Customer_Relationship_Management_System.Models.DealStage.Qualification,
+            CRM___Customer_Relationship_Management_System.Models.DealStage.NeedsAnalysis,
+            CRM___Customer_Relationship_Management_System.Models.DealStage.ValueProposition,
+            CRM___Customer_Relationship_Management_System.Models.DealStage.DecisionMakers,
+            CRM___Customer_Relationship_Management_System.Models.DealStage.Proposal,
+            CRM___Customer_Relationship_Management_System.Models.DealStage.Negotiation
+        };
+    }
+    
+    @foreach (var stage in stages)
+    {
+        var deals = Model.ContainsKey(stage) ? Model[stage] : new List<CRM___Customer_Relationship_Management_System.Models.Deal>();
+        var totalValue = deals.Sum(d => d.Value);
+        
+        <div class="pipeline-stage">
+            <div class="pipeline-stage-header">
+                <span class="pipeline-stage-title">@stage</span>
+                <span class="pipeline-stage-count">@deals.Count</span>
+            </div>
+            
+            <div style="font-size: 0.8125rem; color: var(--success-color); font-weight: 600; margin-bottom: 0.75rem; text-align: center;">
+                $@totalValue.ToString("N0")
+            </div>
+            
+            @if (deals.Any())
+            {
+                @foreach (var deal in deals)
+                {
+                    <a asp-action="Details" asp-route-id="@deal.Id" style="text-decoration: none; color: inherit;">
+                        <div class="pipeline-deal">
+                            <div class="pipeline-deal-title">@deal.Title</div>
+                            <div class="pipeline-deal-company">
+                                <i class="fas fa-building" style="margin-right: 0.25rem;"></i>
+                                @deal.Customer?.CompanyName
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="pipeline-deal-value">$@deal.Value.ToString("N0")</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">@deal.Probability%</div>
+                            </div>
+                            @if (deal.ExpectedCloseDate.HasValue)
+                            {
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                                    <i class="fas fa-calendar"></i>
+                                    @deal.ExpectedCloseDate.Value.ToString("MMM dd")
+                                </div>
+                            }
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <div style="text-align: center; padding: 1rem; color: var(--text-muted); font-size: 0.875rem;">
+                    No deals
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Summary -->
+<div class="stats-grid" style="margin-top: 2rem;">
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">$@Model.SelectMany(m => m.Value).Sum(d => d.Value).ToString("N0")</div>
+            <div class="stat-label">Total Pipeline Value</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">$@Model.SelectMany(m => m.Value).Sum(d => d.WeightedValue).ToString("N0")</div>
+            <div class="stat-label">Weighted Value</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon warning">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.SelectMany(m => m.Value).Count()</div>
+            <div class="stat-label">Active Deals</div>
+        </div>
+    </div>
+</div>

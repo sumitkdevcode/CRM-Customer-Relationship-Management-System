@@ -1,0 +1,160 @@
+@model CRM___Customer_Relationship_Management_System.Models.Lead
+@{
+    ViewData["Title"] = "Add Lead";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Lead</h1>
+        <p class="page-subtitle">Capture a new lead</p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i>
+        Back to List
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <h3 style="margin-bottom: 1rem; color: var(--primary-color);">
+                <i class="fas fa-user"></i> Personal Information
+            </h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="John" />
+                    <span asp-validation-for="FirstName" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Doe" />
+                    <span asp-validation-for="LastName" class="invalid-feedback"></span>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" placeholder="john.doe@company.com" />
+                    <span asp-validation-for="Email" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" placeholder="+1 (555) 123-4567" />
+                </div>
+            </div>
+            
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">
+                <i class="fas fa-building"></i> Company Information
+            </h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CompanyName" class="form-label"></label>
+                    <input asp-for="CompanyName" class="form-control" placeholder="Company Inc." />
+                </div>
+                <div class="form-group">
+                    <label asp-for="JobTitle" class="form-label"></label>
+                    <input asp-for="JobTitle" class="form-control" placeholder="Marketing Manager" />
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Industry" class="form-label"></label>
+                    <input asp-for="Industry" class="form-control" placeholder="Technology" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Website" class="form-label"></label>
+                    <input asp-for="Website" class="form-control" placeholder="https://company.com" />
+                </div>
+            </div>
+            
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">
+                <i class="fas fa-chart-line"></i> Lead Details
+            </h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Source" class="form-label"></label>
+                    <select asp-for="Source" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.LeadSource>()" 
+                            class="form-control form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.LeadStatus>()" 
+                            class="form-control form-select"></select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Rating" class="form-label">Lead Rating (1-5)</label>
+                    <select asp-for="Rating" class="form-control form-select">
+                        <option value="1">1 - Cold</option>
+                        <option value="2">2 - Warming</option>
+                        <option value="3" selected>3 - Warm</option>
+                        <option value="4">4 - Hot</option>
+                        <option value="5">5 - Very Hot</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EstimatedValue" class="form-label"></label>
+                    <input asp-for="EstimatedValue" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="AssignedToId" class="form-label">Assign To</label>
+                <select asp-for="AssignedToId" asp-items="@ViewBag.Users" class="form-control form-select">
+                    <option value="">-- Select User --</option>
+                </select>
+            </div>
+            
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">
+                <i class="fas fa-map-marker-alt"></i> Address
+            </h3>
+            
+            <div class="form-group">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" placeholder="Street address" />
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" placeholder="City" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="State" class="form-label"></label>
+                    <input asp-for="State" class="form-control" placeholder="State" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Country" class="form-label"></label>
+                    <input asp-for="Country" class="form-control" placeholder="Country" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Additional notes about this lead..."></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save"></i>
+                    Save Lead
+                </button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

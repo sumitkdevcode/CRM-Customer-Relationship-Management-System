@@ -1,0 +1,111 @@
+@model CRM___Customer_Relationship_Management_System.Models.Lead
+@{
+    ViewData["Title"] = "Edit Lead";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Edit Lead</h1>
+        <p class="page-subtitle">Update lead information</p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedAt" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="invalid-feedback"></span>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CompanyName" class="form-label"></label>
+                    <input asp-for="CompanyName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="JobTitle" class="form-label"></label>
+                    <input asp-for="JobTitle" class="form-control" />
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Source" class="form-label"></label>
+                    <select asp-for="Source" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.LeadSource>()" class="form-control form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.LeadStatus>()" class="form-control form-select"></select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Rating" class="form-label"></label>
+                    <select asp-for="Rating" class="form-control form-select">
+                        <option value="1">1 - Cold</option>
+                        <option value="2">2 - Warming</option>
+                        <option value="3">3 - Warm</option>
+                        <option value="4">4 - Hot</option>
+                        <option value="5">5 - Very Hot</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EstimatedValue" class="form-label"></label>
+                    <input asp-for="EstimatedValue" class="form-control" type="number" step="0.01" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="AssignedToId" class="form-label"></label>
+                <select asp-for="AssignedToId" asp-items="@ViewBag.Users" class="form-control form-select">
+                    <option value="">-- Select User --</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

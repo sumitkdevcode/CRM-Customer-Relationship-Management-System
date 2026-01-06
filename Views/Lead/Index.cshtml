@@ -1,0 +1,149 @@
+@model IEnumerable<CRM___Customer_Relationship_Management_System.Models.Lead>
+@{
+    ViewData["Title"] = "Leads";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Leads</h1>
+        <p class="page-subtitle">Manage your sales pipeline</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Add Lead
+    </a>
+</div>
+
+<!-- Filters -->
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body" style="padding: 1rem;">
+        <form method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" 
+                       class="form-control" placeholder="Search leads..." />
+            </div>
+            <div>
+                <select name="status" class="form-control form-select" style="min-width: 150px;">
+                    <option value="">All Status</option>
+                    @foreach (var status in Enum.GetValues<CRM___Customer_Relationship_Management_System.Models.LeadStatus>())
+                    {
+                        <option value="@status" selected="@(ViewData["CurrentStatus"]?.ToString() == status.ToString())">@status</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <select name="source" class="form-control form-select" style="min-width: 150px;">
+                    <option value="">All Sources</option>
+                    @foreach (var source in Enum.GetValues<CRM___Customer_Relationship_Management_System.Models.LeadSource>())
+                    {
+                        <option value="@source" selected="@(ViewData["CurrentSource"]?.ToString() == source.ToString())">@source</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary">
+                <i class="fas fa-filter"></i>
+                Filter
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                Clear
+            </a>
+        </form>
+    </div>
+</div>
+
+<!-- Leads Table -->
+<div class="card">
+    <div class="card-body" style="padding: 0;">
+        @if (Model.Any())
+        {
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Email</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Rating</th>
+                            <th>Value</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var lead in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@lead.Id" style="font-weight: 600;">
+                                        @lead.FullName
+                                    </a>
+                                    @if (!string.IsNullOrEmpty(lead.JobTitle))
+                                    {
+                                        <br /><small class="text-muted">@lead.JobTitle</small>
+                                    }
+                                </td>
+                                <td>@(lead.CompanyName ?? "-")</td>
+                                <td><a href="mailto:@lead.Email" class="text-muted">@lead.Email</a></td>
+                                <td><span class="badge badge-info">@lead.Source</span></td>
+                                <td>
+                                    <span class="badge @(lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.Converted ? "badge-success" : lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.Qualified ? "badge-primary" : lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.Lost ? "badge-danger" : "badge-warning")">
+                                        @lead.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="fas fa-star" style="color: @(i <= lead.Rating ? "var(--warning-color)" : "var(--border-color)"); font-size: 0.75rem;"></i>
+                                    }
+                                </td>
+                                <td>
+                                    @if (lead.EstimatedValue.HasValue)
+                                    {
+                                        <span style="font-weight: 600; color: var(--success-color);">$@lead.EstimatedValue.Value.ToString("N0")</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a asp-action="Details" asp-route-id="@lead.Id" class="btn btn-sm btn-secondary" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        @if (lead.Status != CRM___Customer_Relationship_Management_System.Models.LeadStatus.Converted)
+                                        {
+                                            <a asp-action="Convert" asp-route-id="@lead.Id" class="btn btn-sm btn-success" title="Convert">
+                                                <i class="fas fa-exchange-alt"></i>
+                                            </a>
+                                        }
+                                        <a asp-action="Edit" asp-route-id="@lead.Id" class="btn btn-sm btn-secondary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@lead.Id" class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-user-tie"></i>
+                <h3>No leads found</h3>
+                <p>Start capturing leads to grow your pipeline.</p>
+                <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-plus"></i>
+                    Add Lead
+                </a>
+            </div>
+        }
+    </div>
+</div>

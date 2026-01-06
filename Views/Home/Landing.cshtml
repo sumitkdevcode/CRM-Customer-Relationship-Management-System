@@ -1,0 +1,476 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "CRM Pro - Transform Your Customer Relationships";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="CRM Pro is the ultimate customer relationship management platform. Manage leads, track deals, and grow your business with our powerful CRM solution." />
+    <meta name="keywords" content="CRM, Customer Relationship Management, Sales, Leads, Business, Software" />
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="~/css/landing.css" />
+</head>
+<body class="landing-page">
+    <!-- Navigation -->
+    <nav class="landing-nav" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="nav-logo-icon"><i class="fas fa-chart-line"></i></span>
+                CRM Pro
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="/Account/Login" class="btn btn-ghost">Sign In</a>
+                <a href="/Account/Register" class="btn btn-primary">Start Free Trial</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-rocket"></i>
+                    <span>#1 CRM Platform for Growing Businesses</span>
+                </div>
+                <h1 class="hero-title">
+                    Transform Your <span>Customer Relationships</span> Into Revenue
+                </h1>
+                <p class="hero-subtitle">
+                    Streamline your sales pipeline, nurture leads effortlessly, and close more deals with our intuitive CRM platform designed for modern businesses.
+                </p>
+                <div class="hero-cta">
+                    <a href="/Account/Register" class="btn btn-primary btn-large">
+                        <i class="fas fa-play"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#features" class="btn btn-secondary btn-large">
+                        <i class="fas fa-info-circle"></i>
+                        Learn More
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">10K+</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">$2B+</span>
+                        <span class="stat-label">Deals Closed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">98%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-wrapper">
+                    <div class="hero-dashboard-mockup">
+                        <div class="mockup-header">
+                            <span class="mockup-dot red"></span>
+                            <span class="mockup-dot yellow"></span>
+                            <span class="mockup-dot green"></span>
+                        </div>
+                        <div class="mockup-content">
+                            <div class="mockup-grid">
+                                <div class="mockup-card">
+                                    <div class="mockup-card-title">Total Revenue</div>
+                                    <div class="mockup-card-value">$847K</div>
+                                    <div class="mockup-card-change">↑ 23.5%</div>
+                                </div>
+                                <div class="mockup-card">
+                                    <div class="mockup-card-title">Active Deals</div>
+                                    <div class="mockup-card-value">1,247</div>
+                                    <div class="mockup-card-change">↑ 12.3%</div>
+                                </div>
+                                <div class="mockup-card">
+                                    <div class="mockup-card-title">Conversion</div>
+                                    <div class="mockup-card-value">34.8%</div>
+                                    <div class="mockup-card-change">↑ 8.7%</div>
+                                </div>
+                            </div>
+                            <div class="mockup-chart">
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                                <div class="chart-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">Everything You Need to Grow Your Business</h2>
+                <p class="section-subtitle">
+                    Powerful tools designed to help you manage customer relationships, track sales, and boost productivity.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Contact Management</h3>
+                    <p class="feature-description">
+                        Store and organize all your customer information in one place. Track interactions, notes, and history effortlessly.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-funnel-dollar"></i>
+                    </div>
+                    <h3 class="feature-title">Sales Pipeline</h3>
+                    <p class="feature-description">
+                        Visualize your sales process with customizable pipelines. Move deals through stages and never miss an opportunity.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="feature-title">Lead Tracking</h3>
+                    <p class="feature-description">
+                        Capture, qualify, and convert leads with intelligent tracking. Know exactly where each prospect stands.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="feature-title">Task Management</h3>
+                    <p class="feature-description">
+                        Stay organized with built-in task management. Set reminders, assign tasks, and track completion rates.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="feature-title">Analytics & Reports</h3>
+                    <p class="feature-description">
+                        Get actionable insights with powerful analytics. Track KPIs, forecast revenue, and make data-driven decisions.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Enterprise Security</h3>
+                    <p class="feature-description">
+                        Your data is protected with enterprise-grade security. Role-based access, encryption, and compliance built-in.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section section-dark" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Pricing</span>
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-subtitle">
+                    Choose the plan that fits your business. All plans include a 14-day free trial.
+                </p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Starter Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">Starter</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount">29</span>
+                            <span class="pricing-period">/month</span>
+                        </div>
+                        <p class="pricing-description">Perfect for small teams getting started</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check-circle"></i> Up to 5 team members</li>
+                        <li><i class="fas fa-check-circle"></i> 1,000 contacts</li>
+                        <li><i class="fas fa-check-circle"></i> Basic reporting</li>
+                        <li><i class="fas fa-check-circle"></i> Email support</li>
+                        <li><i class="fas fa-check-circle"></i> Mobile app access</li>
+                    </ul>
+                    <a href="/Account/Register" class="btn btn-secondary btn-large pricing-cta">
+                        Get Started
+                    </a>
+                </div>
+                
+                <!-- Professional Plan -->
+                <div class="pricing-card featured">
+                    <span class="pricing-badge">Most Popular</span>
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">Professional</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount">79</span>
+                            <span class="pricing-period">/month</span>
+                        </div>
+                        <p class="pricing-description">For growing teams that need more power</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check-circle"></i> Up to 25 team members</li>
+                        <li><i class="fas fa-check-circle"></i> 10,000 contacts</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced reporting</li>
+                        <li><i class="fas fa-check-circle"></i> Priority support</li>
+                        <li><i class="fas fa-check-circle"></i> API access</li>
+                        <li><i class="fas fa-check-circle"></i> Custom fields</li>
+                        <li><i class="fas fa-check-circle"></i> Workflow automation</li>
+                    </ul>
+                    <a href="/Account/Register" class="btn btn-primary btn-large pricing-cta">
+                        Start Free Trial
+                    </a>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">Enterprise</h3>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount">199</span>
+                            <span class="pricing-period">/month</span>
+                        </div>
+                        <p class="pricing-description">For large organizations with complex needs</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check-circle"></i> Unlimited team members</li>
+                        <li><i class="fas fa-check-circle"></i> Unlimited contacts</li>
+                        <li><i class="fas fa-check-circle"></i> Custom reporting</li>
+                        <li><i class="fas fa-check-circle"></i> Dedicated support</li>
+                        <li><i class="fas fa-check-circle"></i> SSO & Security</li>
+                        <li><i class="fas fa-check-circle"></i> Custom integrations</li>
+                        <li><i class="fas fa-check-circle"></i> SLA guarantee</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary btn-large pricing-cta">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section section-gradient" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label" style="color: rgba(255,255,255,0.8);">Testimonials</span>
+                <h2 class="section-title">Loved by Thousands of Businesses</h2>
+                <p class="section-subtitle">
+                    See what our customers have to say about transforming their business with CRM Pro.
+                </p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "CRM Pro has completely transformed how we manage our sales pipeline. We've seen a 40% increase in conversions since switching."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SK</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Kim</h4>
+                            <p>VP of Sales, TechStart Inc.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "The best CRM we've ever used. The interface is intuitive, and the analytics give us insights we never had before. Highly recommended!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MJ</div>
+                        <div class="testimonial-info">
+                            <h4>Michael Johnson</h4>
+                            <p>CEO, Growth Co.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-content">
+                        "Our team productivity has skyrocketed. Task management and deal tracking are seamless. CRM Pro is now essential to our operations."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">EP</div>
+                        <div class="testimonial-info">
+                            <h4>Emily Patel</h4>
+                            <p>Sales Director, Innovate Labs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Transform Your Business?</h2>
+            <p class="cta-subtitle">
+                Join thousands of companies already using CRM Pro to grow their revenue and build lasting customer relationships.
+            </p>
+            <div class="cta-buttons">
+                <a href="/Account/Register" class="btn btn-white btn-large">
+                    <i class="fas fa-rocket"></i>
+                    Start Your Free Trial
+                </a>
+                <a href="mailto:sales@crmpro.com" class="btn btn-outline-white btn-large">
+                    <i class="fas fa-envelope"></i>
+                    Contact Sales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-chart-line"></i> CRM Pro</h3>
+                    <p>
+                        The complete customer relationship management platform for modern businesses. Manage leads, close deals, and grow your revenue.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CRM Pro. All rights reserved.</p>
+                <p>
+                    <a href="#" style="color: var(--gray-400); text-decoration: none; margin-right: 1.5rem;">Privacy Policy</a>
+                    <a href="#" style="color: var(--gray-400); text-decoration: none;">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

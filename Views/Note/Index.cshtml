@@ -1,0 +1,67 @@
+@model IEnumerable<CRM___Customer_Relationship_Management_System.Models.Note>
+@{
+    ViewData["Title"] = "Notes";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Notes</h1>
+        <p class="page-subtitle">All your notes in one place</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Add Note</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                @foreach (var note in Model)
+                {
+                    <div style="background: var(--bg-light); padding: 1.25rem; border-radius: var(--radius); border: 1px solid var(--border-color); @(note.IsPinned ? "border-left: 4px solid var(--warning-color);" : "")">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                            <div style="font-weight: 600; color: var(--dark-color);">
+                                @if (note.IsPinned) { <i class="fas fa-thumbtack" style="color: var(--warning-color); margin-right: 0.25rem;"></i> }
+                                @note.Title
+                            </div>
+                            <span class="badge badge-info">@note.Type</span>
+                        </div>
+                        
+                        <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.75rem; max-height: 80px; overflow: hidden;">
+                            @note.Content
+                        </div>
+                        
+                        <div style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.75rem;">
+                            @if (note.Customer != null) { <span><i class="fas fa-building"></i> @note.Customer.CompanyName</span> }
+                            @if (note.Lead != null) { <span><i class="fas fa-user-tie"></i> @note.Lead.FullName</span> }
+                            @if (note.Deal != null) { <span><i class="fas fa-handshake"></i> @note.Deal.Title</span> }
+                            <br />
+                            @note.CreatedBy?.FullName • @note.CreatedAt.ToString("MMM dd, yyyy")
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.5rem;">
+                            <form asp-action="TogglePin" asp-route-id="@note.Id" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-secondary" title="@(note.IsPinned ? "Unpin" : "Pin")">
+                                    <i class="fas fa-thumbtack"></i>
+                                </button>
+                            </form>
+                            <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
+                            <form asp-action="Delete" asp-route-id="@note.Id" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this note?');"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-sticky-note"></i>
+                <h3>No notes found</h3>
+                <p>Start taking notes to keep track of important information.</p>
+                <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-plus"></i> Add Note</a>
+            </div>
+        }
+    </div>
+</div>

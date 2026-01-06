@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CRM System</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="app-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <a href="~/Dashboard" class="sidebar-logo">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>CRM System</span>
+                    </a>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <div class="nav-section-title">Main</div>
+                        <a asp-controller="Dashboard" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">CRM</div>
+                        <a asp-controller="Customer" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Customer" ? "active" : "")">
+                            <i class="fas fa-building"></i>
+                            <span>Customers</span>
+                        </a>
+                        <a asp-controller="Contact" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contact" ? "active" : "")">
+                            <i class="fas fa-address-book"></i>
+                            <span>Contacts</span>
+                        </a>
+                        <a asp-controller="Lead" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Lead" ? "active" : "")">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Leads</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Sales</div>
+                        <a asp-controller="Deal" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Deal" && ViewContext.RouteData.Values["action"]?.ToString() != "Pipeline" ? "active" : "")">
+                            <i class="fas fa-handshake"></i>
+                            <span>Deals</span>
+                        </a>
+                        <a asp-controller="Deal" asp-action="Pipeline" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Pipeline" ? "active" : "")">
+                            <i class="fas fa-stream"></i>
+                            <span>Pipeline</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Activities</div>
+                        <a asp-controller="Task" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Task" && ViewContext.RouteData.Values["action"]?.ToString() != "MyTasks" ? "active" : "")">
+                            <i class="fas fa-tasks"></i>
+                            <span>All Tasks</span>
+                        </a>
+                        <a asp-controller="Task" asp-action="MyTasks" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyTasks" ? "active" : "")">
+                            <i class="fas fa-clipboard-check"></i>
+                            <span>My Tasks</span>
+                        </a>
+                        <a asp-controller="Note" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Note" ? "active" : "")">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>Notes</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+            
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Top Header -->
+                <header class="top-header">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search..." />
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="header-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">3</span>
+                        </button>
+                        
+                        <div class="user-menu">
+                            <div class="user-avatar">
+                                @{
+                                    var initials = User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "U";
+                                }
+                                @initials
+                            </div>
+                            <div class="user-info">
+                                <span class="user-name">@User.Identity?.Name</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-secondary" style="margin-left: 10px;">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </header>
+                
+                <!-- Page Content -->
+                <div class="page-content">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            @TempData["Success"]
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            @TempData["Error"]
+                        </div>
+                    }
+                    
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+    else
+    {
+        @RenderBody()
+    }
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

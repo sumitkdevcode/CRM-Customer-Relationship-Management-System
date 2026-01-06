@@ -1,0 +1,101 @@
+@model CRM___Customer_Relationship_Management_System.Models.Deal
+@{
+    ViewData["Title"] = "Add Deal";
+    var selectedCustomerId = ViewBag.SelectedCustomerId as int?;
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Deal</h1>
+        <p class="page-subtitle">Create a new sales opportunity</p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <h3 style="margin-bottom: 1rem; color: var(--primary-color);">
+                <i class="fas fa-handshake"></i> Deal Information
+            </h3>
+            
+            <div class="form-group">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="Enter deal title" />
+                <span asp-validation-for="Title" class="invalid-feedback"></span>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CustomerId" class="form-label"></label>
+                    <select asp-for="CustomerId" asp-items="@ViewBag.Customers" class="form-control form-select">
+                        <option value="">-- Select Customer --</option>
+                    </select>
+                    <span asp-validation-for="CustomerId" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AssignedToId" class="form-label">Assigned To</label>
+                    <select asp-for="AssignedToId" asp-items="@ViewBag.Users" class="form-control form-select">
+                        <option value="">-- Select User --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Value" class="form-label"></label>
+                    <input asp-for="Value" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                    <span asp-validation-for="Value" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Probability" class="form-label"></label>
+                    <input asp-for="Probability" class="form-control" type="number" min="0" max="100" placeholder="10" />
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Stage" class="form-label"></label>
+                    <select asp-for="Stage" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.DealStage>()" 
+                            class="form-control form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Type" class="form-label"></label>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<CRM___Customer_Relationship_Management_System.Models.DealType>()" 
+                            class="form-control form-select"></select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="ExpectedCloseDate" class="form-label"></label>
+                    <input asp-for="ExpectedCloseDate" class="form-control" type="date" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product" class="form-label"></label>
+                    <input asp-for="Product" class="form-control" placeholder="Product or Service" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Deal description..."></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save"></i> Save Deal
+                </button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

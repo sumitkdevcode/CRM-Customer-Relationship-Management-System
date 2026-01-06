@@ -1,0 +1,87 @@
+@model CRM___Customer_Relationship_Management_System.Models.CrmTask
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@Model.Title</h1>
+        <p class="page-subtitle">Task Details</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        @if (Model.Status != CRM___Customer_Relationship_Management_System.Models.TaskStatus.Completed)
+        {
+            <form asp-action="Complete" asp-route-id="@Model.Id" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Complete</button>
+            </form>
+        }
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+<div class="card" style="max-width: 700px;">
+    <div class="card-body">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+            <span class="badge @(Model.Status == CRM___Customer_Relationship_Management_System.Models.TaskStatus.Completed ? "badge-success" : "badge-primary")">@Model.Status</span>
+            <span class="badge badge-info">@Model.Type</span>
+            <span class="badge @(Model.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.High || Model.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Urgent ? "badge-danger" : Model.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Medium ? "badge-warning" : "badge-secondary")">@Model.Priority Priority</span>
+            @if (Model.IsOverdue) { <span class="badge badge-danger">Overdue</span> }
+        </div>
+        
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div style="margin-bottom: 1.5rem;">
+                <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Description</strong>
+                <p>@Model.Description</p>
+            </div>
+        }
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Due Date</strong>
+                <div>@Model.DueDate.ToString("MMM dd, yyyy HH:mm")</div>
+            </div>
+            
+            @if (Model.AssignedTo != null)
+            {
+                <div>
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Assigned To</strong>
+                    <div>@Model.AssignedTo.FullName</div>
+                </div>
+            }
+            
+            @if (Model.CompletedDate.HasValue)
+            {
+                <div>
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Completed</strong>
+                    <div>@Model.CompletedDate.Value.ToString("MMM dd, yyyy HH:mm")</div>
+                </div>
+            }
+            
+            @if (Model.Customer != null)
+            {
+                <div>
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Customer</strong>
+                    <div><a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.CustomerId">@Model.Customer.CompanyName</a></div>
+                </div>
+            }
+            
+            @if (Model.Lead != null)
+            {
+                <div>
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Lead</strong>
+                    <div><a asp-controller="Lead" asp-action="Details" asp-route-id="@Model.LeadId">@Model.Lead.FullName</a></div>
+                </div>
+            }
+            
+            @if (Model.Deal != null)
+            {
+                <div>
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Deal</strong>
+                    <div><a asp-controller="Deal" asp-action="Details" asp-route-id="@Model.DealId">@Model.Deal.Title</a></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

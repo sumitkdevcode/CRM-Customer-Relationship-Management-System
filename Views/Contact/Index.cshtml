@@ -1,0 +1,84 @@
+@model IEnumerable<CRM___Customer_Relationship_Management_System.Models.Contact>
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Contacts</h1>
+        <p class="page-subtitle">Manage your business contacts</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Add Contact</a>
+</div>
+
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body" style="padding: 1rem;">
+        <form method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search contacts..." />
+            </div>
+            <div>
+                <select name="customerId" class="form-control form-select" style="min-width: 200px;" asp-items="@ViewBag.Customers">
+                    <option value="">All Customers</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-times"></i> Clear</a>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body" style="padding: 0;">
+        @if (Model.Any())
+        {
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Company</th>
+                        <th>Title</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contact in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@contact.Id" style="font-weight: 600;">@contact.FullName</a>
+                                @if (contact.IsPrimary) { <span class="badge badge-primary" style="margin-left: 0.25rem;">Primary</span> }
+                            </td>
+                            <td>
+                                @if (contact.Customer != null) {
+                                    <a asp-controller="Customer" asp-action="Details" asp-route-id="@contact.CustomerId">@contact.Customer.CompanyName</a>
+                                }
+                            </td>
+                            <td>@(contact.JobTitle ?? "-")</td>
+                            <td><a href="mailto:@contact.Email">@contact.Email</a></td>
+                            <td>@(contact.Phone ?? "-")</td>
+                            <td>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a asp-action="Details" asp-route-id="@contact.Id" class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@contact.Id" class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@contact.Id" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-address-book"></i>
+                <h3>No contacts found</h3>
+                <p>Add contacts to your customers.</p>
+                <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-plus"></i> Add Contact</a>
+            </div>
+        }
+    </div>
+</div>

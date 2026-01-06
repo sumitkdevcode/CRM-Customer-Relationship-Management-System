@@ -1,0 +1,180 @@
+@model CRM___Customer_Relationship_Management_System.Models.Deal
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@Model.Title</h1>
+        <p class="page-subtitle">Deal Details</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem;">
+    <!-- Left Column -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Deal Info</h3>
+            <span class="badge @(Model.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedWon ? "badge-success" : Model.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedLost ? "badge-danger" : "badge-primary")">
+                @Model.Stage
+            </span>
+        </div>
+        <div class="card-body">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; font-weight: 700; color: var(--success-color);">
+                    $@Model.Value.ToString("N0")
+                </div>
+                <div style="color: var(--text-muted);">Deal Value</div>
+                <div style="margin-top: 0.5rem;">
+                    <span style="font-size: 1.25rem; font-weight: 600;">$@Model.WeightedValue.ToString("N0")</span>
+                    <span style="color: var(--text-muted);"> weighted (@Model.Probability%)</span>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                @if (Model.Customer != null)
+                {
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Customer</strong>
+                        <div>
+                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.CustomerId">
+                                @Model.Customer.CompanyName
+                            </a>
+                        </div>
+                    </div>
+                }
+                
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Type</strong>
+                    <div><span class="badge badge-info">@Model.Type</span></div>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.Product))
+                {
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Product/Service</strong>
+                        <div>@Model.Product</div>
+                    </div>
+                }
+                
+                @if (Model.ExpectedCloseDate.HasValue)
+                {
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Expected Close</strong>
+                        <div>@Model.ExpectedCloseDate.Value.ToString("MMM dd, yyyy")</div>
+                    </div>
+                }
+                
+                @if (Model.ActualCloseDate.HasValue)
+                {
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Actual Close</strong>
+                        <div>@Model.ActualCloseDate.Value.ToString("MMM dd, yyyy")</div>
+                    </div>
+                }
+                
+                @if (Model.AssignedTo != null)
+                {
+                    <div style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Assigned To</strong>
+                        <div>@Model.AssignedTo.FullName</div>
+                    </div>
+                }
+                
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Created</strong>
+                    <div>@Model.CreatedAt.ToString("MMM dd, yyyy")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Column -->
+    <div>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <h3 class="card-title">Description</h3>
+                </div>
+                <div class="card-body">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        }
+        
+        <!-- Notes -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-sticky-note" style="margin-right: 0.5rem;"></i>Notes (@Model.Notes.Count)</h3>
+                <a asp-controller="Note" asp-action="Create" asp-route-dealId="@Model.Id" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus"></i> Add
+                </a>
+            </div>
+            <div class="card-body">
+                @if (Model.Notes.Any())
+                {
+                    @foreach (var note in Model.Notes.OrderByDescending(n => n.CreatedAt))
+                    {
+                        <div style="padding: 1rem; background: var(--bg-light); border-radius: var(--radius); margin-bottom: 0.75rem;">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;">@note.Title</div>
+                            <div style="color: var(--text-muted); margin-bottom: 0.5rem;">@note.Content</div>
+                            <div style="font-size: 0.75rem; color: var(--text-light);">
+                                @note.CreatedBy?.FullName • @note.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="fas fa-sticky-note"></i>
+                        <p>No notes yet</p>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <!-- Tasks -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-tasks" style="margin-right: 0.5rem;"></i>Tasks (@Model.Tasks.Count)</h3>
+                <a asp-controller="Task" asp-action="Create" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus"></i> Add
+                </a>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                @if (Model.Tasks.Any())
+                {
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Task</th><th>Due</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var task in Model.Tasks.OrderBy(t => t.DueDate))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id">@task.Title</a></td>
+                                    <td>@task.DueDate.ToString("MMM dd")</td>
+                                    <td><span class="badge badge-primary">@task.Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="empty-state"><i class="fas fa-tasks"></i><p>No tasks yet</p></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

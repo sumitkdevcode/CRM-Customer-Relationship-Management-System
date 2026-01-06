@@ -1,0 +1,385 @@
+@model CRM___Customer_Relationship_Management_System.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Welcome back! Here's what's happening with your CRM.</p>
+    </div>
+    <a asp-controller="Lead" asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Add New Lead
+    </a>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="fas fa-building"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.TotalCustomers</div>
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                @Model.NewCustomersThisMonth new this month
+            </div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon warning">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.TotalLeads</div>
+            <div class="stat-label">Total Leads</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                @Model.NewLeadsThisMonth new this month
+            </div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.TotalDeals</div>
+            <div class="stat-label">Active Deals</div>
+            <div class="stat-change">
+                Pipeline: $@Model.PipelineValue.ToString("N0")
+            </div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon danger">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">$@Model.ClosedWonValue.ToString("N0")</div>
+            <div class="stat-label">Revenue (Won)</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i>
+                $@Model.RevenueThisMonth.ToString("N0") this month
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Row Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="fas fa-tasks"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.PendingTasks</div>
+            <div class="stat-label">Pending Tasks</div>
+            @if (Model.OverdueTasks > 0)
+            {
+                <div class="stat-change negative">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @Model.OverdueTasks overdue
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="fas fa-percentage"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.LeadConversionRate%</div>
+            <div class="stat-label">Lead Conversion Rate</div>
+            <div class="stat-change">
+                @Model.ConvertedLeads leads converted
+            </div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon warning">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">$@Model.WeightedPipelineValue.ToString("N0")</div>
+            <div class="stat-label">Weighted Pipeline</div>
+            <div class="stat-change">
+                Probability-adjusted value
+            </div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon primary">
+            <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-content">
+            <div class="stat-value">@Model.QualifiedLeads</div>
+            <div class="stat-label">Qualified Leads</div>
+            <div class="stat-change">
+                @Model.NewLeads new leads pending
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+    <!-- Upcoming Tasks -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-clock" style="margin-right: 0.5rem;"></i>
+                Upcoming Tasks
+            </h3>
+            <a asp-controller="Task" asp-action="Index" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body">
+            @if (Model.UpcomingTasks.Any())
+            {
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Due Date</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var task in Model.UpcomingTasks)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id">
+                                            @task.Title
+                                        </a>
+                                    </td>
+                                    <td>@task.DueDate.ToString("MMM dd, HH:mm")</td>
+                                    <td>
+                                        <span class="badge @(task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.High || task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Urgent ? "badge-danger" : task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Medium ? "badge-warning" : "badge-secondary")">
+                                            @task.Priority
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No upcoming tasks</h3>
+                    <p>Great job! You're all caught up.</p>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- Recent Leads -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-user-tie" style="margin-right: 0.5rem;"></i>
+                Recent Leads
+            </h3>
+            <a asp-controller="Lead" asp-action="Index" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body">
+            @if (Model.RecentLeads.Any())
+            {
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lead in Model.RecentLeads)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Lead" asp-action="Details" asp-route-id="@lead.Id">
+                                            @lead.FullName
+                                        </a>
+                                    </td>
+                                    <td>@(lead.CompanyName ?? "-")</td>
+                                    <td>
+                                        <span class="badge @(lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.New ? "badge-info" : lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.Qualified ? "badge-success" : lead.Status == CRM___Customer_Relationship_Management_System.Models.LeadStatus.Converted ? "badge-primary" : "badge-secondary")">
+                                            @lead.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-user-plus"></i>
+                    <h3>No leads yet</h3>
+                    <p>Start adding leads to your CRM.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+    <!-- Recent Deals -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-handshake" style="margin-right: 0.5rem;"></i>
+                Recent Deals
+            </h3>
+            <a asp-controller="Deal" asp-action="Index" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body">
+            @if (Model.RecentDeals.Any())
+            {
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Deal</th>
+                                <th>Value</th>
+                                <th>Stage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var deal in Model.RecentDeals)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Deal" asp-action="Details" asp-route-id="@deal.Id">
+                                            @deal.Title
+                                        </a>
+                                        <br />
+                                        <small class="text-muted">@deal.Customer?.CompanyName</small>
+                                    </td>
+                                    <td style="font-weight: 600; color: var(--success-color);">$@deal.Value.ToString("N0")</td>
+                                    <td>
+                                        <span class="badge @(deal.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedWon ? "badge-success" : deal.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedLost ? "badge-danger" : "badge-primary")">
+                                            @deal.Stage
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-handshake"></i>
+                    <h3>No deals yet</h3>
+                    <p>Create your first deal to get started.</p>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- Top Customers -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-trophy" style="margin-right: 0.5rem;"></i>
+                Top Customers
+            </h3>
+            <a asp-controller="Customer" asp-action="Index" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+        <div class="card-body">
+            @if (Model.TopCustomers.Any())
+            {
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Deals</th>
+                                <th>Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var customer in Model.TopCustomers)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Customer" asp-action="Details" asp-route-id="@customer.CustomerId">
+                                            @customer.CompanyName
+                                        </a>
+                                    </td>
+                                    <td>@customer.DealCount</td>
+                                    <td style="font-weight: 600; color: var(--success-color);">$@customer.TotalDealValue.ToString("N0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-building"></i>
+                    <h3>No customers yet</h3>
+                    <p>Add customers to track their value.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-history" style="margin-right: 0.5rem;"></i>
+            Recent Activities
+        </h3>
+    </div>
+    <div class="card-body">
+        @if (Model.RecentActivities.Any())
+        {
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                @foreach (var activity in Model.RecentActivities)
+                {
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: var(--bg-light); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                            <i class="fas @(activity.Type == CRM___Customer_Relationship_Management_System.Models.ActivityType.Created ? "fa-plus" : activity.Type == CRM___Customer_Relationship_Management_System.Models.ActivityType.Updated ? "fa-edit" : activity.Type == CRM___Customer_Relationship_Management_System.Models.ActivityType.DealWon ? "fa-trophy" : "fa-check")"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500;">@activity.Description</div>
+                            <div style="font-size: 0.8125rem; color: var(--text-muted);">
+                                @activity.PerformedBy?.FullName • @activity.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-clock"></i>
+                <h3>No activities yet</h3>
+                <p>Activities will appear here as you use the CRM.</p>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,123 @@
+@model IEnumerable<CRM___Customer_Relationship_Management_System.Models.CrmTask>
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">All Tasks</h1>
+        <p class="page-subtitle">Manage tasks and follow-ups</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a asp-action="MyTasks" class="btn btn-secondary"><i class="fas fa-user"></i> My Tasks</a>
+        <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Add Task</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body" style="padding: 1rem;">
+        <form method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div>
+                <select name="status" class="form-control form-select" style="min-width: 150px;">
+                    <option value="">All Status</option>
+                    @foreach (var status in Enum.GetValues<CRM___Customer_Relationship_Management_System.Models.TaskStatus>())
+                    {
+                        <option value="@status" selected="@(ViewData["CurrentStatus"]?.ToString() == status.ToString())">@status</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <select name="priority" class="form-control form-select" style="min-width: 150px;">
+                    <option value="">All Priorities</option>
+                    @foreach (var priority in Enum.GetValues<CRM___Customer_Relationship_Management_System.Models.TaskPriority>())
+                    {
+                        <option value="@priority" selected="@(ViewData["CurrentPriority"]?.ToString() == priority.ToString())">@priority</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-times"></i> Clear</a>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body" style="padding: 0;">
+        @if (Model.Any())
+        {
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Type</th>
+                        <th>Related To</th>
+                        <th>Assigned To</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model)
+                    {
+                        <tr style="@(task.IsOverdue ? "background: #fee2e2;" : "")">
+                            <td><a asp-action="Details" asp-route-id="@task.Id" style="font-weight: 600;">@task.Title</a></td>
+                            <td><span class="badge badge-info">@task.Type</span></td>
+                            <td>
+                                @if (task.Customer != null)
+                                {
+                                    <a asp-controller="Customer" asp-action="Details" asp-route-id="@task.CustomerId">@task.Customer.CompanyName</a>
+                                }
+                                else if (task.Lead != null)
+                                {
+                                    <a asp-controller="Lead" asp-action="Details" asp-route-id="@task.LeadId">@task.Lead.FullName</a>
+                                }
+                                else if (task.Deal != null)
+                                {
+                                    <a asp-controller="Deal" asp-action="Details" asp-route-id="@task.DealId">@task.Deal.Title</a>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>@task.AssignedTo?.FullName</td>
+                            <td>
+                                @task.DueDate.ToString("MMM dd, HH:mm")
+                                @if (task.IsOverdue) { <span class="badge badge-danger">Overdue</span> }
+                            </td>
+                            <td>
+                                <span class="badge @(task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.High || task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Urgent ? "badge-danger" : task.Priority == CRM___Customer_Relationship_Management_System.Models.TaskPriority.Medium ? "badge-warning" : "badge-secondary")">
+                                    @task.Priority
+                                </span>
+                            </td>
+                            <td><span class="badge @(task.Status == CRM___Customer_Relationship_Management_System.Models.TaskStatus.Completed ? "badge-success" : "badge-primary")">@task.Status</span></td>
+                            <td>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    @if (task.Status != CRM___Customer_Relationship_Management_System.Models.TaskStatus.Completed)
+                                    {
+                                        <form asp-action="Complete" asp-route-id="@task.Id" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-success" title="Complete"><i class="fas fa-check"></i></button>
+                                        </form>
+                                    }
+                                    <a asp-action="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@task.Id" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-tasks"></i>
+                <h3>No tasks found</h3>
+                <p>Create tasks to stay organized.</p>
+                <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-plus"></i> Add Task</a>
+            </div>
+        }
+    </div>
+</div>

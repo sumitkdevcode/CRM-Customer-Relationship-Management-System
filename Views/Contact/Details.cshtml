@@ -1,0 +1,79 @@
+@model CRM___Customer_Relationship_Management_System.Models.Contact
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">@Model.FullName</h1>
+        <p class="page-subtitle">Contact Details</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <div class="card-body">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 1rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; font-weight: 600;">
+                @Model.FirstName.Substring(0, 1)@Model.LastName.Substring(0, 1)
+            </div>
+            <h4>@Model.FullName @if (Model.IsPrimary) { <span class="badge badge-primary">Primary</span> }</h4>
+            @if (!string.IsNullOrEmpty(Model.JobTitle))
+            {
+                <p class="text-muted">@Model.JobTitle @if (!string.IsNullOrEmpty(Model.Department)) { <span>• @Model.Department</span> }</p>
+            }
+        </div>
+        
+        <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            @if (Model.Customer != null)
+            {
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Company</strong>
+                    <div><a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.CustomerId">@Model.Customer.CompanyName</a></div>
+                </div>
+            }
+            
+            <div style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Email</strong>
+                <div><a href="mailto:@Model.Email">@Model.Email</a></div>
+            </div>
+            
+            @if (!string.IsNullOrEmpty(Model.Phone))
+            {
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Phone</strong>
+                    <div>@Model.Phone</div>
+                </div>
+            }
+            
+            @if (!string.IsNullOrEmpty(Model.Mobile))
+            {
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Mobile</strong>
+                    <div>@Model.Mobile</div>
+                </div>
+            }
+            
+            <div style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Status</strong>
+                <div><span class="badge @(Model.Status == CRM___Customer_Relationship_Management_System.Models.ContactStatus.Active ? "badge-success" : "badge-secondary")">@Model.Status</span></div>
+            </div>
+            
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div style="margin-bottom: 0.75rem;">
+                    <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Notes</strong>
+                    <div>@Model.Notes</div>
+                </div>
+            }
+            
+            <div style="margin-bottom: 0.75rem;">
+                <strong style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">Created</strong>
+                <div>@Model.CreatedAt.ToString("MMM dd, yyyy")</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+@model IEnumerable<CRM___Customer_Relationship_Management_System.Models.Deal>
+@{
+    ViewData["Title"] = "Deals";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Deals</h1>
+        <p class="page-subtitle">Manage your sales opportunities</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+        <a asp-action="Pipeline" class="btn btn-secondary">
+            <i class="fas fa-stream"></i>
+            View Pipeline
+        </a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Deal
+        </a>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body" style="padding: 1rem;">
+        <form method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" 
+                       class="form-control" placeholder="Search deals..." />
+            </div>
+            <div>
+                <select name="stage" class="form-control form-select" style="min-width: 150px;">
+                    <option value="">All Stages</option>
+                    @foreach (var stage in Enum.GetValues<CRM___Customer_Relationship_Management_System.Models.DealStage>())
+                    {
+                        <option value="@stage" selected="@(ViewData["CurrentStage"]?.ToString() == stage.ToString())">@stage</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Clear
+            </a>
+        </form>
+    </div>
+</div>
+
+<!-- Deals Table -->
+<div class="card">
+    <div class="card-body" style="padding: 0;">
+        @if (Model.Any())
+        {
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Deal</th>
+                            <th>Customer</th>
+                            <th>Value</th>
+                            <th>Stage</th>
+                            <th>Probability</th>
+                            <th>Expected Close</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var deal in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@deal.Id" style="font-weight: 600;">
+                                        @deal.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    @if (deal.Customer != null)
+                                    {
+                                        <a asp-controller="Customer" asp-action="Details" asp-route-id="@deal.CustomerId">
+                                            @deal.Customer.CompanyName
+                                        </a>
+                                    }
+                                </td>
+                                <td style="font-weight: 600; color: var(--success-color);">
+                                    $@deal.Value.ToString("N0")
+                                </td>
+                                <td>
+                                    <span class="badge @(deal.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedWon ? "badge-success" : deal.Stage == CRM___Customer_Relationship_Management_System.Models.DealStage.ClosedLost ? "badge-danger" : "badge-primary")">
+                                        @deal.Stage
+                                    </span>
+                                </td>
+                                <td>@deal.Probability%</td>
+                                <td>@deal.ExpectedCloseDate?.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a asp-action="Details" asp-route-id="@deal.Id" class="btn btn-sm btn-secondary" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@deal.Id" class="btn btn-sm btn-secondary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@deal.Id" class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-handshake"></i>
+                <h3>No deals found</h3>
+                <p>Start creating deals to track your sales.</p>
+                <a asp-action="Create" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-plus"></i> Add Deal
+                </a>
+            </div>
+        }
+    </div>
+</div>
